@@ -1,9 +1,0 @@
-plugins {
-    id 'java-library'
-}
-
-dependencies {
-    implementation 'com.microsoft.azure:applicationinsights-agent:3.6.2'
-    implementation 'com.microsoft.azure:applicationinsights-logging-logback:2.6.4'
-}
-

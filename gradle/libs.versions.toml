@@ -1,0 +1,116 @@
+[versions]
+spring-boot = "4.0.9"
+spring-dependency-management = "1.1.7"
+lombok = "1.18.36"
+mapstruct = "1.5.5.Final"
+archunit = "1.3.0"
+springdoc = "2.7.0"
+resilience4j = "2.2.0"
+jspecify = "1.0.0"
+pitest = "1.19.0"
+pitest-junit5 = "1.2.1"
+sonarqube = "6.0.1.5171"
+owasp-dependencycheck = "12.1.0"
+
+[libraries]
+# Spring Boot starters (imperativos / MVC)
+boot-starter = { module = "org.springframework.boot:spring-boot-starter" }
+boot-starter-web = { module = "org.springframework.boot:spring-boot-starter-web" }
+boot-starter-webmvc = { module = "org.springframework.boot:spring-boot-starter-webmvc" }
+boot-starter-websocket = { module = "org.springframework.boot:spring-boot-starter-websocket" }
+boot-starter-jpa = { module = "org.springframework.boot:spring-boot-starter-data-jpa" }
+boot-starter-validation = { module = "org.springframework.boot:spring-boot-starter-validation" }
+boot-starter-actuator = { module = "org.springframework.boot:spring-boot-starter-actuator" }
+boot-starter-aop = { module = "org.springframework.boot:spring-boot-starter-aop" }
+boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test" }
+boot-starter-webmvc-test = { module = "org.springframework.boot:spring-boot-starter-webmvc-test" }
+boot-starter-data-jpa-test = { module = "org.springframework.boot:spring-boot-starter-data-jpa-test" }
+boot-starter-restclient-test = { module = "org.springframework.boot:spring-boot-starter-restclient-test" }
+boot-autoconfigure = { module = "org.springframework.boot:spring-boot-autoconfigure" }
+
+# JDBC / JPA drivers
+postgresql = { module = "org.postgresql:postgresql" }
+h2 = { module = "com.h2database:h2" }
+
+# Cache
+boot-starter-data-redis = { module = "org.springframework.boot:spring-boot-starter-data-redis" }
+caffeine = { module = "com.github.ben-manes.caffeine:caffeine" }
+
+# AWS SDK v2 (Dynamo, SQS, SNS) — clientes sincronos
+awssdk-bom = { module = "software.amazon.awssdk:bom", version = "2.29.20" }
+awssdk-dynamodb = { module = "software.amazon.awssdk:dynamodb" }
+awssdk-dynamodb-enhanced = { module = "software.amazon.awssdk:dynamodb-enhanced" }
+awssdk-sqs = { module = "software.amazon.awssdk:sqs" }
+awssdk-sns = { module = "software.amazon.awssdk:sns" }
+
+# Kafka (spring-kafka imperativo)
+spring-kafka = { module = "org.springframework.kafka:spring-kafka" }
+
+# gRPC (server/client bloqueante con grpc-java)
+grpc-bom = { module = "io.grpc:grpc-bom", version = "1.85.1" }
+grpc-stub = { module = "io.grpc:grpc-stub" }
+grpc-protobuf = { module = "io.grpc:grpc-protobuf" }
+grpc-netty-shaded = { module = "io.grpc:grpc-netty-shaded" }
+grpc-services = { module = "io.grpc:grpc-services" }
+grpc-inprocess = { module = "io.grpc:grpc-inprocess" }
+grpc-testing = { module = "io.grpc:grpc-testing" }
+protobuf-java = { module = "com.google.protobuf:protobuf-java", version = "3.25.9" }
+tomcat-annotations-api = { module = "org.apache.tomcat:annotations-api", version = "6.0.53" }
+
+# Null-safety
+jspecify = { module = "org.jspecify:jspecify", version.ref = "jspecify" }
+
+# Lombok
+lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
+
+# MapStruct
+mapstruct = { module = "org.mapstruct:mapstruct", version.ref = "mapstruct" }
+mapstruct-processor = { module = "org.mapstruct:mapstruct-processor", version.ref = "mapstruct" }
+
+# Validation
+jakarta-validation-api = { module = "jakarta.validation:jakarta.validation-api" }
+
+# Documentation (OpenAPI para MVC)
+springdoc-webmvc = { module = "org.springdoc:springdoc-openapi-starter-webmvc-ui", version.ref = "springdoc" }
+
+# Observabilidad
+logstash-encoder = { module = "net.logstash.logback:logstash-logback-encoder", version = "8.0" }
+micrometer-registry-prometheus = { module = "io.micrometer:micrometer-registry-prometheus" }
+
+# Resilience (resilience4j imperativo + AOP)
+resilience4j-spring-boot3 = { module = "io.github.resilience4j:resilience4j-spring-boot3", version.ref = "resilience4j" }
+resilience4j-circuitbreaker = { module = "io.github.resilience4j:resilience4j-circuitbreaker", version.ref = "resilience4j" }
+resilience4j-retry = { module = "io.github.resilience4j:resilience4j-retry", version.ref = "resilience4j" }
+resilience4j-bulkhead = { module = "io.github.resilience4j:resilience4j-bulkhead", version.ref = "resilience4j" }
+resilience4j-timelimiter = { module = "io.github.resilience4j:resilience4j-timelimiter", version.ref = "resilience4j" }
+resilience4j-micrometer = { module = "io.github.resilience4j:resilience4j-micrometer", version.ref = "resilience4j" }
+
+# Testing
+junit-bom = { module = "org.junit:junit-bom", version = "6.0.3" }
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter" }
+junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
+mockito-core = { module = "org.mockito:mockito-core", version = "5.14.2" }
+mockito-junit-jupiter = { module = "org.mockito:mockito-junit-jupiter", version = "5.14.2" }
+archunit-junit5 = { module = "com.tngtech.archunit:archunit-junit5", version.ref = "archunit" }
+
+# Testcontainers (configurado, ejecutado en CI)
+testcontainers-bom = { module = "org.testcontainers:testcontainers-bom", version = "1.20.4" }
+testcontainers-junit = { module = "org.testcontainers:junit-jupiter" }
+testcontainers-postgresql = { module = "org.testcontainers:postgresql" }
+
+# Parches de seguridad (CVE) de transitivas que el BOM de Spring Boot NO gestiona.
+# Se aplican como constraints en el build raiz: fijan la version solo si la libreria
+# ya llega al grafo (kafka -> lz4/snappy, gRPC -> guava, driver Postgres -> scram).
+lz4-java = { module = "at.yawk.lz4:lz4-java", version = "1.11.4" }
+snappy-java = { module = "org.xerial.snappy:snappy-java", version = "1.1.10.9" }
+guava = { module = "com.google.guava:guava", version = "33.7.2-jre" }
+scram-client = { module = "com.ongres.scram:scram-client", version = "3.3" }
+scram-common = { module = "com.ongres.scram:scram-common", version = "3.3" }
+
+[plugins]
+protobuf = { id = "com.google.protobuf", version = "0.9.4" }
+spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
+spring-dependency-management = { id = "io.spring.dependency-management", version.ref = "spring-dependency-management" }
+pitest = { id = "info.solidsoft.pitest", version.ref = "pitest" }
+sonarqube = { id = "org.sonarqube", version.ref = "sonarqube" }
+owasp-dependencycheck = { id = "org.owasp.dependencycheck", version.ref = "owasp-dependencycheck" }

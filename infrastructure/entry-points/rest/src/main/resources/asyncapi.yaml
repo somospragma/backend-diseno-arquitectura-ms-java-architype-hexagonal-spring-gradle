@@ -1,0 +1,50 @@
+asyncapi: 3.0.0
+info:
+  title: Accounts Service - Async API (Spring MVC)
+  version: v1
+  description: >
+    Contrato de las APIs asincronas del servicio de cuentas. Documenta el canal
+    WebSocket de eventos en tiempo real. AsyncAPI es al mundo event-driven lo que
+    OpenAPI es a REST. (DOC-BP-006)
+servers:
+  local:
+    host: localhost:8080
+    protocol: ws
+    description: Servidor WebSocket local (Tomcat embebido).
+channels:
+  accountEvents:
+    address: /ws/accounts/events
+    description: Canal de eventos de cuenta emitidos por el servidor (server -> cliente).
+    messages:
+      accountEvent:
+        $ref: '#/components/messages/AccountEvent'
+operations:
+  receiveAccountEvents:
+    action: receive
+    channel:
+      $ref: '#/channels/accountEvents'
+    summary: El cliente recibe eventos de cuenta en streaming por WebSocket.
+components:
+  messages:
+    AccountEvent:
+      name: AccountEvent
+      title: Evento de cuenta
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/AccountEvent'
+  schemas:
+    AccountEvent:
+      type: object
+      required: [type]
+      properties:
+        type:
+          type: string
+          description: Tipo de evento (p.ej. CONNECTED, ACCOUNT_CREATED, ACCOUNT_UPDATED).
+          examples: [CONNECTED, ACCOUNT_CREATED]
+        accountId:
+          type: string
+          description: Identificador de la cuenta relacionada (si aplica).
+        occurredAt:
+          type: string
+          format: date-time
+          description: Instante del evento en formato ISO-8601 (si aplica).
