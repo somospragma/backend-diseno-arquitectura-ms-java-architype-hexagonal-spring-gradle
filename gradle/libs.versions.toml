@@ -1,12 +1,12 @@
 [versions]
-spring-boot = "4.0.9"
+spring-boot = "4.1.2"
 spring-dependency-management = "1.1.7"
-lombok = "1.18.36"
-mapstruct = "1.5.5.Final"
-archunit = "1.3.0"
+lombok = "1.18.48"
+mapstruct = "1.6.3"
+archunit = "1.5.1"
 springdoc = "2.7.0"
-resilience4j = "2.2.0"
-jspecify = "1.0.0"
+resilience4j = "2.4.0"
+jspecify = "1.0.1"
 pitest = "1.19.0"
 pitest-junit5 = "1.2.1"
 sonarqube = "7.5.0.8588"
@@ -37,7 +37,7 @@ boot-starter-data-redis = { module = "org.springframework.boot:spring-boot-start
 caffeine = { module = "com.github.ben-manes.caffeine:caffeine" }
 
 # AWS SDK v2 (Dynamo, SQS, SNS) — clientes sincronos
-awssdk-bom = { module = "software.amazon.awssdk:bom", version = "2.29.20" }
+awssdk-bom = { module = "software.amazon.awssdk:bom", version = "2.57.11" }
 awssdk-dynamodb = { module = "software.amazon.awssdk:dynamodb" }
 awssdk-dynamodb-enhanced = { module = "software.amazon.awssdk:dynamodb-enhanced" }
 awssdk-sqs = { module = "software.amazon.awssdk:sqs" }
@@ -86,11 +86,11 @@ resilience4j-timelimiter = { module = "io.github.resilience4j:resilience4j-timel
 resilience4j-micrometer = { module = "io.github.resilience4j:resilience4j-micrometer", version.ref = "resilience4j" }
 
 # Testing
-junit-bom = { module = "org.junit:junit-bom", version = "6.0.3" }
+junit-bom = { module = "org.junit:junit-bom", version = "6.1.3" }
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter" }
 junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
-mockito-core = { module = "org.mockito:mockito-core", version = "5.14.2" }
-mockito-junit-jupiter = { module = "org.mockito:mockito-junit-jupiter", version = "5.14.2" }
+mockito-core = { module = "org.mockito:mockito-core", version = "5.24.0" }
+mockito-junit-jupiter = { module = "org.mockito:mockito-junit-jupiter", version = "5.24.0" }
 archunit-junit5 = { module = "com.tngtech.archunit:archunit-junit5", version.ref = "archunit" }
 
 # Testcontainers (configurado, ejecutado en CI)
@@ -101,14 +101,14 @@ testcontainers-postgresql = { module = "org.testcontainers:postgresql" }
 # Parches de seguridad (CVE) de transitivas que el BOM de Spring Boot NO gestiona.
 # Se aplican como constraints en el build raiz: fijan la version solo si la libreria
 # ya llega al grafo (kafka -> lz4/snappy, gRPC -> guava, driver Postgres -> scram).
-lz4-java = { module = "at.yawk.lz4:lz4-java", version = "1.11.4" }
+lz4-java = { module = "at.yawk.lz4:lz4-java", version = "1.14.0" }
 snappy-java = { module = "org.xerial.snappy:snappy-java", version = "1.1.10.9" }
-guava = { module = "com.google.guava:guava", version = "33.7.2-jre" }
-scram-client = { module = "com.ongres.scram:scram-client", version = "3.3" }
-scram-common = { module = "com.ongres.scram:scram-common", version = "3.3" }
+guava = { module = "com.google.guava:guava", version = "33.8.0-jre" }
+scram-client = { module = "com.ongres.scram:scram-client", version = "3.4" }
+scram-common = { module = "com.ongres.scram:scram-common", version = "3.4" }
 
 [plugins]
-protobuf = { id = "com.google.protobuf", version = "0.9.4" }
+protobuf = { id = "com.google.protobuf", version = "0.10.1" }
 spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
 spring-dependency-management = { id = "io.spring.dependency-management", version.ref = "spring-dependency-management" }
 pitest = { id = "info.solidsoft.pitest", version.ref = "pitest" }
