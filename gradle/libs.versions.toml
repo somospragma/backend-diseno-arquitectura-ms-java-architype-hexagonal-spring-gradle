@@ -94,7 +94,7 @@ mockito-junit-jupiter = { module = "org.mockito:mockito-junit-jupiter", version 
 archunit-junit5 = { module = "com.tngtech.archunit:archunit-junit5", version.ref = "archunit" }
 
 # Testcontainers (configurado, ejecutado en CI)
-testcontainers-bom = { module = "org.testcontainers:testcontainers-bom", version = "1.20.4" }
+testcontainers-bom = { module = "org.testcontainers:testcontainers-bom", version = "2.0.5" }
 testcontainers-junit = { module = "org.testcontainers:junit-jupiter" }
 testcontainers-postgresql = { module = "org.testcontainers:postgresql" }
 
