@@ -36,7 +36,7 @@ dependencies {
 
 protobuf {
     protoc {
-        artifact = "com.google.protobuf:protoc:3.25.9"
+        artifact = "com.google.protobuf:protoc:4.36.2"
     }
     plugins {
         // Plugin de gRPC Java (stubs bloqueantes/async estandar).
