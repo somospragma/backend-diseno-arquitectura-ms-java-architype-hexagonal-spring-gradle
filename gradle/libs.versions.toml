@@ -54,7 +54,7 @@ grpc-netty-shaded = { module = "io.grpc:grpc-netty-shaded" }
 grpc-services = { module = "io.grpc:grpc-services" }
 grpc-inprocess = { module = "io.grpc:grpc-inprocess" }
 grpc-testing = { module = "io.grpc:grpc-testing" }
-protobuf-java = { module = "com.google.protobuf:protobuf-java", version = "3.25.9" }
+protobuf-java = { module = "com.google.protobuf:protobuf-java", version = "4.36.2" }
 tomcat-annotations-api = { module = "org.apache.tomcat:annotations-api", version = "6.0.53" }
 
 # Null-safety
