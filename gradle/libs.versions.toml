@@ -102,7 +102,7 @@ testcontainers-postgresql = { module = "org.testcontainers:postgresql" }
 # Se aplican como constraints en el build raiz: fijan la version solo si la libreria
 # ya llega al grafo (kafka -> lz4/snappy, gRPC -> guava, driver Postgres -> scram).
 lz4-java = { module = "at.yawk.lz4:lz4-java", version = "1.11.4" }
-snappy-java = { module = "org.xerial.snappy:snappy-java", version = "1.1.10.9" }
+snappy-java = { module = "org.xerial.snappy:snappy-java", version = "1.1.10.12" }
 guava = { module = "com.google.guava:guava", version = "33.7.2-jre" }
 scram-client = { module = "com.ongres.scram:scram-client", version = "3.3" }
 scram-common = { module = "com.ongres.scram:scram-common", version = "3.3" }
