@@ -59,9 +59,9 @@ jobs:
         with:
           name: sbom-cyclonedx
           path: sbom.cdx.json
-      # SonarQube: corre solo si el repo tiene los secretos SONAR_TOKEN y SONAR_HOST_URL.
+      # SonarQube: corre solo si existen ambos secretos, SONAR_TOKEN y SONAR_HOST_URL.
       - name: SonarQube analysis
-        if: env.SONAR_TOKEN != ''
+        if: env.SONAR_TOKEN != '' && env.SONAR_HOST_URL != ''
         run: ./gradlew sonar --no-daemon
 
   secrets:

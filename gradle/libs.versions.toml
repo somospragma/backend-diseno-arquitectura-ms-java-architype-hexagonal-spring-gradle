@@ -9,7 +9,7 @@ resilience4j = "2.2.0"
 jspecify = "1.0.0"
 pitest = "1.19.0"
 pitest-junit5 = "1.2.1"
-sonarqube = "6.0.1.5171"
+sonarqube = "7.5.0.8588"
 owasp-dependencycheck = "12.1.0"
 
 [libraries]
