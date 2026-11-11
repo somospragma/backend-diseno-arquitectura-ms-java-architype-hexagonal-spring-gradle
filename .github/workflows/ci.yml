@@ -66,6 +66,9 @@ jobs:
       # SonarCloud: corre cuando el secreto SONAR_TOKEN esta disponible (no llega a PRs de forks).
       - name: SonarCloud analysis
         if: env.SONAR_TOKEN != ''
+        # TEMPORAL: no bloqueante hasta que SONAR_TOKEN tenga acceso a los proyectos en SonarCloud
+        # (hoy responde HTTP 403). Quitar esta linea para volverlo gate obligatorio.
+        continue-on-error: true
         run: ./gradlew sonar --no-daemon "-Dsonar.organization=$SONAR_ORGANIZATION" "-Dsonar.projectKey=$SONAR_PROJECT_KEY"
 
   secrets:
