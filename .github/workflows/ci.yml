@@ -19,11 +19,11 @@ jobs:
     env:
       # A nivel de job: un `if` de paso no ve el `env` declarado dentro del propio paso.
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      # SonarCloud por defecto; se puede sobrescribir con variables de organizacion.
-      SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL || 'https://sonarcloud.io' }}
-      SONAR_ORGANIZATION: ${{ vars.SONAR_ORGANIZATION || 'somospragma' }}
-      # Convencion de SonarCloud para repos de GitHub: <org>_<repo>
-      SONAR_PROJECT_KEY: ${{ github.repository_owner }}_${{ github.event.repository.name }}
+      # SONAR_TOKEN y SONAR_ORGANIZATION son secretos de la organizacion de GitHub.
+      SONAR_ORGANIZATION: ${{ secrets.SONAR_ORGANIZATION }}
+      SONAR_HOST_URL: https://sonarcloud.io
+      # Convencion de SonarCloud para repos importados de GitHub: <organizacion>_<repo>
+      SONAR_PROJECT_KEY: ${{ secrets.SONAR_ORGANIZATION }}_${{ github.event.repository.name }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Set up JDK 21
