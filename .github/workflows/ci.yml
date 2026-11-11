@@ -1,0 +1,91 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  quality:
+    name: Build, tests y quality gates
+    runs-on: ubuntu-latest
+    env:
+      # A nivel de job: un `if` de paso no ve el `env` declarado dentro del propio paso.
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      # SonarCloud por defecto; se puede sobrescribir con variables de organizacion.
+      SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL || 'https://sonarcloud.io' }}
+      SONAR_ORGANIZATION: ${{ vars.SONAR_ORGANIZATION || 'somospragma' }}
+      # Convencion de SonarCloud para repos de GitHub: <org>_<repo>
+      SONAR_PROJECT_KEY: ${{ github.repository_owner }}_${{ github.event.repository.name }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Set up JDK 21
+        uses: actions/setup-java@77dd5b2ce225ea11469928ac317850245a74ae78 # v6.2.0
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@8da46b539cd8fe6ab27ca75128919a18d757604c # v6.4.1
+      # Compila, corre tests unitarios/integracion y tests de arquitectura (ArchUnit)
+      - name: Build & test
+        run: ./gradlew build --no-daemon
+      # Gate de cobertura: falla si < 90% de linea (con exclusiones sensatas)
+      - name: Coverage gate (90%)
+        run: ./gradlew jacocoRootCoverageVerification --no-daemon
+      # Mutation testing del dominio (umbral 60%)
+      - name: Mutation testing (domain)
+        run: ./gradlew :domain:usecases:pitest --no-daemon
+      # SCA sobre el jar ejecutable: contiene las dependencias reales de runtime.
+      - name: Dependency scan (trivy, HIGH/CRITICAL)
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
+        with:
+          scan-type: rootfs
+          scan-ref: application/app-service/build/libs
+          scanners: vuln
+          severity: HIGH,CRITICAL
+          ignore-unfixed: true
+          exit-code: '1'
+      - name: SBOM (CycloneDX)
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
+        with:
+          scan-type: rootfs
+          scan-ref: application/app-service/build/libs
+          format: cyclonedx
+          output: sbom.cdx.json
+      - name: Publicar SBOM
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: sbom-cyclonedx
+          path: sbom.cdx.json
+      # SonarCloud: corre cuando el secreto SONAR_TOKEN esta disponible (no llega a PRs de forks).
+      - name: SonarCloud analysis
+        if: env.SONAR_TOKEN != ''
+        # TEMPORAL: no bloqueante hasta que SONAR_TOKEN tenga acceso a los proyectos en SonarCloud
+        # (hoy responde HTTP 403). Quitar esta linea para volverlo gate obligatorio.
+        continue-on-error: true
+        run: ./gradlew sonar --no-daemon "-Dsonar.organization=$SONAR_ORGANIZATION" "-Dsonar.projectKey=$SONAR_PROJECT_KEY"
+
+  secrets:
+    name: Secret scan (gitleaks)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - name: Install gitleaks (version y checksum fijos)
+        env:
+          GITLEAKS_VERSION: 8.30.1
+          GITLEAKS_SHA256: 551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb
+        run: |
+          curl -sSfL -o /tmp/gitleaks.tar.gz \
+            "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz"
+          echo "${GITLEAKS_SHA256}  /tmp/gitleaks.tar.gz" | sha256sum -c -
+          tar -xzf /tmp/gitleaks.tar.gz -C /tmp gitleaks
+      - name: Secret scan (gitleaks)
+        run: /tmp/gitleaks git --redact --verbose --exit-code 1

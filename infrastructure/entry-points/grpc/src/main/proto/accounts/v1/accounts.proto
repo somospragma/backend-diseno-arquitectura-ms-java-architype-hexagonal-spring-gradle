@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+// Contrato gRPC versionado (v1). El versionado va en el package (MSG-O-004 / API-O-004).
+package accounts.v1;
+
+option java_multiple_files = true;
+option java_package = "co.com.pragma.accounts.grpc.v1";
+option java_outer_classname = "AccountsProto";
+
+// Servicio de cuentas expuesto por gRPC (comunicacion sincrona entre microservicios, MSG-BP-006).
+service AccountService {
+  // Unary: obtener una cuenta por id.
+  rpc GetAccount(GetAccountRequest) returns (AccountReply);
+  // Server-streaming: listar cuentas (con tope aplicado en el servidor).
+  rpc ListAccounts(ListAccountsRequest) returns (stream AccountReply);
+}
+
+message GetAccountRequest {
+  string id = 1;
+}
+
+message ListAccountsRequest {
+  int32 limit = 1;
+}
+
+message AccountReply {
+  string id = 1;
+  string holder_name = 2;
+  string account_type = 3;
+  string status = 4;
+}

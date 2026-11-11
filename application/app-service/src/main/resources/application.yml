@@ -1,0 +1,101 @@
+spring:
+  application:
+    name: ${SERVICE_NAME:accounts-service}
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/accounts_db}
+    username: ${DB_USER:accounts}
+    password: ${DB_PASSWORD:accounts}
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 20
+      idle-timeout: 30000
+      connection-timeout: 30000
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+
+accounts:
+  service-name: ${SERVICE_NAME:accounts-service}
+  max-page-size: 100
+
+server:
+  port: ${SERVER_PORT:8080}
+  shutdown: graceful
+  tomcat:
+    connection-timeout: 30s
+    threads:
+      max: 200
+      min-spare: 10
+    max-http-form-post-size: 2MB
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus,metrics
+  endpoint:
+    health:
+      probes:
+        enabled: true
+      show-details: when-authorized
+      group:
+        readiness:
+          include: readinessState,db
+  health:
+    readinessstate:
+      enabled: true
+    livenessstate:
+      enabled: true
+
+credit-score:
+  base-url: ${CREDIT_SCORE_URL:https://credit-score.internal}
+  connect-timeout-ms: 2000
+  read-timeout-ms: 3000
+
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        registerHealthIndicator: true
+        slidingWindowType: COUNT_BASED
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        permittedNumberOfCallsInHalfOpenState: 3
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        waitDurationInOpenState: 30s
+        failureRateThreshold: 50
+    instances:
+      creditScore:
+        baseConfig: default
+  retry:
+    instances:
+      creditScore:
+        maxAttempts: 3
+        waitDuration: 200ms
+        enableExponentialBackoff: true
+        exponentialBackoffMultiplier: 2
+        randomizedWaitFactor: 0.5
+        retryExceptions:
+          - java.io.IOException
+          - org.springframework.web.client.ResourceAccessException
+  bulkhead:
+    instances:
+      creditScore:
+        maxConcurrentCalls: 20
+        maxWaitDuration: 50ms
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+
+logging:
+  level:
+    root: INFO
+    co.com.pragma: DEBUG

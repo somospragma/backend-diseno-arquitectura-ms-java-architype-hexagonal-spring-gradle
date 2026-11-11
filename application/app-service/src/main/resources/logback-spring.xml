@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- Logs estructurados JSON (OBS-O-001). Incluye traceId desde MDC.
+         En dev se puede usar patron legible; en prod siempre JSON. -->
+    <springProperty name="serviceName" source="spring.application.name" defaultValue="accounts-service"/>
+
+    <appender name="JSON" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+            <includeMdcKeyName>traceId</includeMdcKeyName>
+            <customFields>{"service":"${serviceName}"}</customFields>
+            <fieldNames>
+                <timestamp>timestamp</timestamp>
+                <level>level</level>
+                <logger>logger</logger>
+                <message>message</message>
+                <thread>thread</thread>
+            </fieldNames>
+            <!-- Masking de datos sensibles en logs (DSC-O-002 / OBS-O-003).
+                 Enmascara emails, PAN (tarjetas) y tokens Bearer en cualquier
+                 mensaje logueado, como red de seguridad ademas del masking
+                 explicito de las respuestas. -->
+            <jsonGeneratorDecorator class="net.logstash.logback.mask.MaskingJsonGeneratorDecorator">
+                <valueMask>
+                    <value>[\w.+-]+@[\w.-]+\.\w+</value>
+                    <mask>****@****</mask>
+                </valueMask>
+                <valueMask>
+                    <value>\b(?:\d[ -]*?){13,19}\b</value>
+                    <mask>****PAN****</mask>
+                </valueMask>
+                <valueMask>
+                    <value>(?i)Bearer\s+[A-Za-z0-9._-]+</value>
+                    <mask>Bearer ****</mask>
+                </valueMask>
+            </jsonGeneratorDecorator>
+        </encoder>
+    </appender>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level [traceId=%X{traceId}] %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Perfil dev: consola legible. Otros: JSON estructurado. -->
+    <springProfile name="dev">
+        <root level="INFO">
+            <appender-ref ref="CONSOLE"/>
+        </root>
+    </springProfile>
+    <springProfile name="!dev">
+        <root level="INFO">
+            <appender-ref ref="JSON"/>
+        </root>
+    </springProfile>
+</configuration>
