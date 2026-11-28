@@ -74,7 +74,7 @@ jakarta-validation-api = { module = "jakarta.validation:jakarta.validation-api" 
 springdoc-webmvc = { module = "org.springdoc:springdoc-openapi-starter-webmvc-ui", version.ref = "springdoc" }
 
 # Observabilidad
-logstash-encoder = { module = "net.logstash.logback:logstash-logback-encoder", version = "8.0" }
+logstash-encoder = { module = "net.logstash.logback:logstash-logback-encoder", version = "9.0" }
 micrometer-registry-prometheus = { module = "io.micrometer:micrometer-registry-prometheus" }
 
 # Resilience (resilience4j imperativo + AOP)
