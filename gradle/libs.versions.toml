@@ -4,13 +4,13 @@ spring-dependency-management = "1.1.7"
 lombok = "1.18.48"
 mapstruct = "1.6.3"
 archunit = "1.5.1"
-springdoc = "2.7.0"
+springdoc = "3.2.0"
 resilience4j = "2.4.0"
 jspecify = "1.0.1"
 pitest = "1.19.0"
 pitest-junit5 = "1.2.1"
 sonarqube = "7.6.0.18749"
-owasp-dependencycheck = "12.1.0"
+owasp-dependencycheck = "13.0.0"
 
 [libraries]
 # Spring Boot starters (imperativos / MVC)
@@ -102,7 +102,7 @@ testcontainers-postgresql = { module = "org.testcontainers:postgresql" }
 # Se aplican como constraints en el build raiz: fijan la version solo si la libreria
 # ya llega al grafo (kafka -> lz4/snappy, gRPC -> guava, driver Postgres -> scram).
 lz4-java = { module = "at.yawk.lz4:lz4-java", version = "1.14.0" }
-snappy-java = { module = "org.xerial.snappy:snappy-java", version = "1.1.10.9" }
+snappy-java = { module = "org.xerial.snappy:snappy-java", version = "1.1.10.12" }
 guava = { module = "com.google.guava:guava", version = "33.8.0-jre" }
 scram-client = { module = "com.ongres.scram:scram-client", version = "3.4" }
 scram-common = { module = "com.ongres.scram:scram-common", version = "3.4" }
