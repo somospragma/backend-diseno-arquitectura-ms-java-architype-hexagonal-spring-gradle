@@ -13,7 +13,7 @@ dependencies {
     implementation(project(":infrastructure:helpers"))
     implementation(libs.boot.starter.web)
     implementation(libs.mapstruct)
-    implementation(libs.resilience4j.spring.boot3)
+    implementation(libs.resilience4j.spring.boot4)
     implementation(libs.resilience4j.circuitbreaker)
     implementation(libs.resilience4j.retry)
     implementation(libs.resilience4j.bulkhead)
