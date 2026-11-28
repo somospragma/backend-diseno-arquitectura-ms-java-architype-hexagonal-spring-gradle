@@ -41,7 +41,7 @@ protobuf {
     plugins {
         // Plugin de gRPC Java (stubs bloqueantes/async estandar).
         id("grpc") {
-            artifact = "io.grpc:protoc-gen-grpc-java:1.85.1"
+            artifact = "io.grpc:protoc-gen-grpc-java:1.86.0"
         }
     }
     generateProtoTasks {
