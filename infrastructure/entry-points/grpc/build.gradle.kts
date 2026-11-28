@@ -36,7 +36,7 @@ dependencies {
 
 protobuf {
     protoc {
-        artifact = "com.google.protobuf:protoc:3.25.9"
+        artifact = "com.google.protobuf:protoc:4.36.2"
     }
     plugins {
         // Plugin de gRPC Java (stubs bloqueantes/async estandar).
@@ -47,7 +47,8 @@ protobuf {
     generateProtoTasks {
         all().forEach { task ->
             task.plugins {
-                id("grpc")
+                // Desde el plugin 0.10 este bloque puede correr mas de una vez por tarea: maybeCreate no duplica.
+                maybeCreate("grpc")
             }
         }
     }
